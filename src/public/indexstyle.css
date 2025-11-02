@@ -1,6 +1,6 @@
 body {
   font-family: sans-serif;
-  background: black;
+  background: linear-gradient(135deg, #000000, #21134b);
   display: flex;
   justify-content: center;
   align-items: center;
@@ -8,15 +8,51 @@ body {
 }
 
 main {
+  position: relative;
   background: white;
   padding: 2rem;
   border-radius: 20px;
-  box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 0 25px rgba(0, 0, 0, 0.1);
   max-width: 1000px;
   width: 80%;
   text-align: center;
-  animation: fadeIn 0.4s ease;
+  z-index: 1;
 }
+
+main::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  padding: 5px; 
+  border-radius: 20px;
+  background: linear-gradient(
+    270deg,
+    #ff0000,
+    #ff9900,
+    #ffff00,
+    #33ff00,
+    #00ffff,
+    #0066ff,
+    #cc00ff,
+    #ff0099,
+    #ff0000
+  );
+  background-size: 600% 600%;
+  animation: rgbFlow 10s linear infinite;
+  -webkit-mask: 
+    linear-gradient(#fff 0 0) content-box, 
+    linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  z-index: -1;
+}
+
+@keyframes rgbFlow {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
 
 h1 {
   margin-top: 0;
@@ -108,6 +144,7 @@ h1 {
   transform: translateY(0);
 }
 
+/* Make standalone "generate" buttons match the full-size ones */
 .btn.generate {
   display: inline-flex;
   justify-content: center;
@@ -174,39 +211,6 @@ input[type="text"] {
   color: white;
 }
 
-/* --- DELETE BUTTON --- */
-.delete-form {
-  margin-left: auto;
-}
-
-.delete-btn {
-  background: rgba(244, 67, 54, 0.1);
-  color: #f44336;
-  border: none;
-  border-radius: 50%;
-  width: 34px;
-  height: 34px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  font-size: 18px;
-  cursor: pointer;
-  transition: all 0.25s ease;
-  backdrop-filter: blur(4px);
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
-}
-
-.delete-btn:hover {
-  background: rgba(244, 67, 54, 0.2);
-  transform: scale(1.1);
-  box-shadow: 0 4px 10px rgba(244, 67, 54, 0.25);
-}
-
-.delete-btn:active {
-  transform: scale(0.95);
-  background: rgba(244, 67, 54, 0.3);
-}
-
 /* Example section */
 .example-row {
   display: flex;
@@ -221,59 +225,4 @@ input[type="text"] {
   font-family: "bd-supper";
   font-weight: 400;
   font-size: 2rem;
-}
-
-/* --- PAGINATION --- */
-.pagination {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 0.6rem;
-  margin-top: 2rem;
-  flex-wrap: wrap;
-}
-
-.page-btn {
-  background: rgba(97, 102, 97, 0.15);
-  color: #333;
-  border: none;
-  border-radius: 10px;
-  padding: 0.6rem 1rem;
-  text-decoration: none;
-  font-weight: 600;
-  transition: all 0.25s ease;
-  backdrop-filter: blur(6px);
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
-}
-
-.page-btn:hover {
-  background: rgba(97, 102, 97, 0.35);
-  transform: translateY(-2px);
-}
-
-.page-btn.active {
-  background: #616661;
-  color: white;
-  transform: scale(1.05);
-  box-shadow: 0 0 10px rgba(97, 102, 97, 0.4);
-}
-
-.page-btn.prev,
-.page-btn.next {
-  font-size: 1.4rem;
-  padding: 0.5rem 0.9rem;
-  background: rgba(0, 0, 0, 0.05);
-}
-
-
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(5px);
-  }
-
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
 }

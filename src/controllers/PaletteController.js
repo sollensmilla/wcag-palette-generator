@@ -34,10 +34,19 @@ export default class PaletteController {
 
     async showAllPalettes(context) {
         try {
-            const palettes = await this.#fetchAllPalettes();
-            context.render('palettes', { palettes });
+            const page = parseInt(context.req.query.page) || 1
+            const perPage = 10
+
+            const { palettes, totalPages } = await this.#fetchPaginatedPalettes(page, perPage)
+
+            context.render('palettes', {
+                palettes,
+                currentPage: page,
+                totalPages,
+                flash: context.req.flash()
+            })
         } catch {
-            context.fail(new DatabaseError('Failed to fetch palettes.'));
+            context.fail(new DatabaseError('Failed to fetch palettes.'))
         }
     }
 
@@ -85,8 +94,16 @@ export default class PaletteController {
         await palette.save();
     }
 
-    async #fetchAllPalettes() {
-        return await Palette.find().sort({ createdAt: -1 }).lean();
+    async #fetchPaginatedPalettes(page, perPage) {
+        const totalPalettes = await Palette.countDocuments()
+        const palettes = await Palette.find()
+            .sort({ createdAt: -1 })
+            .skip((page - 1) * perPage)
+            .limit(perPage)
+            .lean()
+
+        const totalPages = Math.ceil(totalPalettes / perPage)
+        return { palettes, totalPages }
     }
 
     async #deletePaletteById(id) {

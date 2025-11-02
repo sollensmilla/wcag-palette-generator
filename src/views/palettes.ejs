@@ -85,7 +85,28 @@
                                                 </div>
                                                 <% } %>
 
-                                                    <a href="/" class="btn generate">Generate a new palette</a>
+                                                    <% if (totalPages> 1) { %>
+                                                        <div class="pagination">
+                                                            <% if (currentPage> 1) { %>
+                                                                <a href="/palette?page=<%= currentPage - 1 %>"
+                                                                    class="page-btn prev">‹</a>
+                                                                <% } %>
+
+                                                                    <% for (let i=1; i <=totalPages; i++) { %>
+                                                                        <a href="/palette?page=<%= i %>"
+                                                                            class="page-btn <%= i === currentPage ? 'active' : '' %>">
+                                                                            <%= i %>
+                                                                        </a>
+                                                                        <% } %>
+
+                                                                            <% if (currentPage < totalPages) { %>
+                                                                                <a href="/palette?page=<%= currentPage + 1 %>"
+                                                                                    class="page-btn next">›</a>
+                                                                                <% } %>
+                                                        </div>
+                                                        <% } %>
+
+                                                            <a href="/" class="btn generate">Generate a new palette</a>
 
     </main>
 </body>
